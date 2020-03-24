@@ -38,7 +38,7 @@ def security():
             'password': password,
                 }        
         net_connect = ConnectHandler(**device)  
-        #Vérifie la présence d'une ligne de configuration issu du fichier 'SECURISATION_L2', si résultat positif: ne fait rien.
+        #Vérifie la présence d'une ligne de configuration issu du fichier 'CONFIGURATION_L2', si résultat positif: ne fait rien.
         try:                    
             result= net_connect.send_command("show running-config | inc ip access-list standard SSH")
         except (NetMikoTimeoutException):
@@ -70,7 +70,7 @@ def security():
                 }
         
         net_connect = ConnectHandler(**device) 
-        #Vérifie la présence d'une ligne de configuration issue de 'SECURISATION_L3', si résultat positif; ne fait rien.
+        #Vérifie la présence d'une ligne de configuration issue de 'CONFIGURATION_L3', si résultat positif; ne fait rien.
         try:                   
             result= net_connect.send_command("show running-config | inc ip access-list standard SSH")
         except (NetMikoTimeoutException):
