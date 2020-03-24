@@ -24,7 +24,7 @@ def security():
     start_time = datetime.now()
     
     #Ouverture du fichier de configuration et du fichier contenant les IP des commutateurs.
-    with open('SECURISATION_L2') as f:
+    with open('CONFIGURATION_L2') as f:
         lines_l2 = f.read().splitlines()
     with open('switch.list') as f:
         ip_sw = f.read().splitlines()
@@ -54,7 +54,7 @@ def security():
             print(output)
 
     #Ouverture du fichier de configuration et du fichier contenant les IP des routeurs.
-    with open('SECURISATION_L3') as f:
+    with open('CONFIGURATION_L3') as f:
          lines = f.read().splitlines()
     with open('router.list') as f:
          ip_rtr = f.read().splitlines()
