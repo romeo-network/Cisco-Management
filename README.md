@@ -62,7 +62,7 @@ python3 cisco_management.py
 
 ### Menu avec 3 actions possibles:
 
-#### Configuration:
+#### Sécurisation:
 Cette fonctionnalité permet d’envoyer une liste d’instruction visant à:
 - Vérifier si l'équipement a déjà été configuré par ce script
 - Désactiver les services non utilisés
