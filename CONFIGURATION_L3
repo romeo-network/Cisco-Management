@@ -1,0 +1,73 @@
+ip ssh time-out 60
+ip ssh logging events
+crypto key generate rsa usage-keys label SSH modulus 2048
+ip ssh rsa keypair-name SSH
+ip ssh version 2  
+ip ssh dh min size 2048
+ip scp server enable
+ip access-list standard SSH
+permit 100.0.0.1 0.0.0.0
+deny   any log
+line vty 0 2
+access-class SSH in
+no ip domain-name
+
+ip tftp blocksize 8192
+no service tcp-small-servers
+no service udp-small-servers
+no service finger
+no service config
+no cdp run
+no ip http server 
+no ip http secure-server
+no ip bootp server
+no service dhcp 
+no snmp-server enable traps 
+no snmp-server   
+no ip source-route  
+no service dhcp
+service tcp-keepalives-in
+service tcp-keepalives-out
+no service pad
+privilege exec level 15 enable
+ip arp proxy disable
+
+line vty 0 2
+login local
+transport input ssh
+transport output ssh
+exec-timeout 3 0
+loggin synchronous
+
+line cons 0
+login local
+exec-timeout 3 0
+transport preferred none
+loggin synchronous
+
+line vty 3 1869
+login
+no exec
+transport input none
+transport output none
+ 
+login on-failure log
+login on-success log
+
+login block-for 300 attempts 3 within 120
+login delay 2
+
+service timestamps log datetime localtime show-timezone
+archive
+log config
+logging enable
+hidekeys
+notify syslog
+logging size 1000
+logging buffered 64000
+logging console notifications
+logging monitor notifications
+
+interface Null0
+no ip unreachables
+no ip source-route
