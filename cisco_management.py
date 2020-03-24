@@ -195,8 +195,8 @@ def save():
         net_connect = ConnectHandler(**device)        
         #Récupération du hostname pour nommer le dossier de sauvegarde
         def hostname():            
-            sh_check = net_connect.send_command("show running-config | in hostname")
-            hostname = sh_check.split()
+            sh_hstn = net_connect.send_command("show running-config | in hostname")
+            hostname = sh_hstn.split()
             return hostname[1]           
             
         #Ici, on obtient l'équivalent d'un 'mkdir -p' pour l'idempotence.
