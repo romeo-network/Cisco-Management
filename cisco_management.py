@@ -124,14 +124,14 @@ def reload():
         'password': password,
          }                
         net_connect = ConnectHandler(**device)
-        output = net_connect.send_command('reload in 5', '\n') 
+        net_connect.send_command('reload in 5', '\n') 
         time.sleep(0.5)
-        output += net_connect.send_command('no\n', expect_string='confirm')
+        net_connect.send_command('no\n', expect_string='confirm')
         time.sleep(0.5)
-        output += net_connect.send_command('\n')
+        net_connect.send_command('\n')
         time.sleep(0.5)
         net_connect.disconnect()
-
+        
 #Fonction destiné à supprimer les fichiers de configurations des équipements.
 #Appelle la fonction 'reload()' une fois terminée.
 def wipeout():
@@ -149,15 +149,15 @@ def wipeout():
         'password': password,
          }
         net_connect = ConnectHandler(**device)
-        output = net_connect.send_command('delete vlan.dat', '\n')
+        net_connect.send_command('delete vlan.dat', '\n')
         time.sleep(0.5)
-        output = net_connect.send_command('vlan.dat\n', expect_string='confirm')
+        net_connect.send_command('vlan.dat\n', expect_string='confirm')
         time.sleep(0.5)
-        output = net_connect.send_command('\n')
+        net_connect.send_command('\n')
         time.sleep(0.5)
-        output += net_connect.send_command('write erase', expect_string='confirm')
+        net_connect.send_command('write erase', expect_string='confirm')
         time.sleep(0.5)
-        output += net_connect.send_command('\n')
+        net_connect.send_command('\n')
         net_connect.disconnect()
         
 
@@ -173,9 +173,9 @@ def wipeout():
         'password': password,
          }                
         net_connect = ConnectHandler(**device)
-        output = net_connect.send_command('write erase', expect_string='confirm')
+        net_connect.send_command('write erase', expect_string='confirm')
         time.sleep(0.5)
-        output += net_connect.send_command('\n')
+        net_connect.send_command('\n')
         net_connect.disconnect()
     #Appelle la fonction 'reload()'
     reload()
@@ -217,16 +217,16 @@ def save():
             
         #Ici, on obtient l'équivalent d'un 'mkdir -p' pour l'idempotence.
         try:
-            os.makedirs("/home/osboxes/Documents/cisco/" + hostname())
+            os.makedirs("/home/cisco/" + hostname())
         except OSError as exc:
-            if exc.errno == errno.EEXIST and os.path.isdir("/home/osboxes/Documents/cisco/" + hostname()):
+            if exc.errno == errno.EEXIST and os.path.isdir("/home/cisco/" + hostname()):
                 pass
                 
         #Création des fichiers en local, et y incorpore le résultat du 'show running-config'.
         bckp = net_connect.send_command("show running-config")              
         now = datetime.now()
         date = now.strftime("%d_%m_%Y_%H:%M:%S")
-        bckp_path = "/home/osboxes/Documents/cisco/{0}/{1}.txt".format(hostname(),date)        
+        bckp_path = "/home/cisco/{0}/{1}.txt".format(hostname(),date)        
         with open(bckp_path, "a") as file:
             file.write(bckp + "\n")
         net_connect.disconnect()  
