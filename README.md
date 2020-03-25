@@ -1,3 +1,5 @@
+![IP](https://img.shields.io/badge/Python-3-green) ![IP](https://img.shields.io/badge/Cisco-IOS%2015-yellowgreen) ![IP](https://img.shields.io/badge/Cisco-IOS%2012-orange) ![IP](https://img.shields.io/badge/Netmiko-3.0.0-yellow)
+
 # Cisco-Management
 Cet outil a pour but la gestion d'équipement **Cisco propulsé sous IOS**.
 
