@@ -43,7 +43,7 @@ Vous devrez renseigner dans les fichiers ‘switch.list’ et ‘router.list’,
 
 Exemple:
 
-![IP](https://user-images.githubusercontent.com/55896009/77462720-cc9d3200-6e04-11ea-9684-c545b4ab7d2a.JPG)
+![IP2](https://user-images.githubusercontent.com/55896009/77539246-57336f00-6ea1-11ea-826e-a7fd5d39ff82.JPG)
 
 ### Préparation des fichiers 'CONFIGURATION_L2' et 'CONFIGURATION_L3:
 
