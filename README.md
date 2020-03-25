@@ -24,9 +24,9 @@ Afin d’utiliser cet outil, il sera nécessaire d’installer les bons paquets:
 
 #### Sous Ubuntu:
 
-sudo apt install -y python3-pip
+<code>sudo apt install -y python3-pip
 
-python3 -m pip install netmiko
+python3 -m pip install netmiko</code>
 
 ## Installation:
 chmod +x cisco_management.py
@@ -39,7 +39,7 @@ Afin de pouvoir utiliser ce script, il est nécessaire de configurer le SSH sur 
 
 ### Préparation 'router.list' et 'switch.list':
 
-Vous devrez renseigner dans les fichiers ‘switch.list’ et ‘router.list’, toutes les adresses IP de vos commutateurs sous forme X.X.X.X
+Vous devrez renseigner dans les fichiers ‘switch.list’ et ‘router.list’, toutes les adresses IP de vos commutateurs sous forme X.X.X.X.
 
 Exemple:
 
