@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#Version 1.0
+#Version 1.1
 #25/03/2020
 
 #Importation des modules nécessaires.
