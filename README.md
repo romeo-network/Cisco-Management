@@ -98,3 +98,7 @@ Cette foncionnalité permet de faire un effacement:
 - du fichier ‘vlan.dat’ pour les commutateurs
 
 Et, de planifier un redémarrage des équipements.
+
+## Licence
+
+[![LICENCE](https://img.shields.io/badge/Licence-GPL--3.0-red)](https://www.gnu.org/licenses/gpl-3.0.fr.html)]
