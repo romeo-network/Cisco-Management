@@ -13,6 +13,8 @@ Cet outil, à destination d’équipement Cisco propulsé sous IOS, a pour but :
 - C7200
 - C3745
 - C2960
+- IOSvL2
+- IOSvL3
 
 ## Pré-requis:
 
@@ -29,6 +31,10 @@ chmod +x cisco_management.py
 
 ## Configuration:
 
+### Configuration SSH:
+
+Afin de pouvoir utiliser ce script, il est nécessaire de configurer le SSH sur les équipements et d'avoir initié une première connexion sur ces derniers.
+
 ### Préparation 'router.list' et 'switch.list':
 
 Vous devrez renseigner dans les fichiers ‘switch.list’ et ‘router.list’, toutes les adresses IP de vos commutateurs sous forme X.X.X.X
@@ -37,8 +43,13 @@ Exemple:
 
 ![IP](https://user-images.githubusercontent.com/55896009/77462720-cc9d3200-6e04-11ea-9684-c545b4ab7d2a.JPG)
 
+### Préparation des fichiers 'CONFIGURATION_L2' et 'CONFIGURATION_L3:
+
 Dans les fichiers ‘configuration_l3’ et ‘configuration_l2’, se trouvent les instructions qui seront envoyés aux équipements.
 Avant d’ajouter des instructions dans ces fichiers, il est vivement conseillé de les tester directement sur au moins un équipement, afin de s'assurer du comportement en résultant.
+De plus, si vous utilisez les fichiers fournis ici, adapter la 'range' des 'line vty' selon vos besoins. 
+
+Le fichier 'CONFIGURATION_COMMENTED' explique brièvement l'usage des commandes, ne pas l'utiliser avec ce script.
 
 ### Préparation de la fonction 'save':
 
@@ -54,7 +65,15 @@ Si vous utilisez ce script avec GNS3, sur un IOSvL2, la valeur 'config-register'
 
 ![reload](https://user-images.githubusercontent.com/55896009/77462156-00c42300-6e04-11ea-92ef-d671cf7c090b.jpg)
 
-De plus, certains IOS (c7200, c3745, c3725) figent lors d'un 'reload'. Les redémarrer manuellement via un clic droit et 'reload' directement avec GNS3.
+De plus, certains IOS (c7200, c3745, c3725) figent lors d'un 'reload'. Privilégier l'utilisation d'IOSvL3 dans ce cas.
+
+Enfin, suite à un 'write erase', il se peut que l'équipement émulé ne fasse pas apparaître un prompt de type:
+
+'System configuration has been modified. Save? [yes/no]'
+
+Auquel cas, modifier la fonction 'reload' comme suit:
+
+![RELOAD_NO](https://user-images.githubusercontent.com/55896009/77533876-fd7a7700-6e97-11ea-92ae-b91ac88b856a.jpg)
 
 ## Utilisation:
 
