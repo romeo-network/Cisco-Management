@@ -24,12 +24,12 @@ Afin d’utiliser cet outil, il sera nécessaire d’installer les bons paquets:
 
 #### Sous Ubuntu:
 
-<code>sudo apt install -y python3-pip
+<code>sudo apt install -y python3-pip</code>
 
-python3 -m pip install netmiko</code>
+<code>python3 -m pip install netmiko</code>
 
 ## Installation:
-chmod +x cisco_management.py
+<code>chmod +x cisco_management.py</code>
 
 ## Configuration:
 
