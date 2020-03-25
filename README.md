@@ -100,4 +100,7 @@ Cette foncionnalité permet de faire un effacement:
 Et, de planifier un redémarrage des équipements.
 
 ## Licence
-![IP](https://img.shields.io/badge/Licence-GPL--3.0-red)
+![IP](https://img.shields.io/badge/Licence-GPL--3.0-red)                                  
+
+##### Ajouté le 24/03/2020
+##### Dernière mise à jour le 25/03/2020
