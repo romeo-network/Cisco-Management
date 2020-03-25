@@ -3,6 +3,8 @@
 
 #Version 1.1
 #25/03/2020
+#License GPL.3-0
+#Author romeo-network
 
 #Importation des modules nécessaires.
 from netmiko import ConnectHandler
