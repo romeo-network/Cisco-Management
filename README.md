@@ -67,7 +67,7 @@ Si vous utilisez ce script avec GNS3, sur un IOSvL2, la valeur 'config-register'
 
 ![reload](https://user-images.githubusercontent.com/55896009/77462156-00c42300-6e04-11ea-92ef-d671cf7c090b.jpg)
 
-De plus, certains IOS (c7200, c3745, c3725) figent lors d'un 'reload'. Privilégier l'utilisation d'IOSvL3 dans ce cas.
+De plus, certains IOS (c7200, c3745, c3725) figent lors d'un 'reload'. Privilégier l'utilisation d'IOSvL3 dans ce cas. ([En savoir plus](https://gns3.com/community/discussion/problem-with-reload-c3725-3745))
 
 Enfin, suite à un 'write erase', il se peut que l'équipement émulé ne fasse pas apparaître un prompt de type:
 
@@ -104,4 +104,4 @@ Et, de planifier un redémarrage des équipements.
 
 ##
 ###### Ajouté le 24/03/2020
-###### Dernière mise à jour le 25/03/2020
+###### Dernière mise à jour le 26/03/2020
