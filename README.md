@@ -83,7 +83,7 @@ Auquel cas, modifier la fonction 'reload' comme suit:
 
 ### Menu avec 3 actions possibles:
 
-#### Sécurisation:
+#### Configuration avancée:
 Cette fonctionnalité permet d’envoyer une liste d’instruction visant à:
 - Vérifier si l'équipement a déjà été configuré par ce script
 - Désactiver les services non utilisés
@@ -92,7 +92,7 @@ Cette fonctionnalité permet d’envoyer une liste d’instruction visant à:
 #### Sauvegarde:
 Cette fonctionnalité permet de récupérer les 'running-config' sous forme de fichier '.txt', et de le sauvegarder dans le repértoire définit dans la variable 'path_backup', se trouvant dans la fonction 'save'. Le dossier aura pour nom, le 'hostname'.
 
-#### Factory reset:
+#### Effacement intégral:
 Cette foncionnalité permet de faire un effacement:
 - de la ‘startup-config’
 - du fichier ‘vlan.dat’ pour les commutateurs
