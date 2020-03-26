@@ -79,7 +79,7 @@ Auquel cas, modifier la fonction 'reload' comme suit:
 
 ## Utilisation:
 
-python3 cisco_management.py
+<code>python3 cisco_management.py</code>
 
 ### Menu avec 3 actions possibles:
 
