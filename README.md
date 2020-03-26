@@ -53,11 +53,11 @@ De plus, si vous utilisez les fichiers fournis ici, adapter la 'range' des 'line
 
 Le fichier 'CONFIGURATION_COMMENTED' explique brièvement l'usage des commandes, ne pas l'utiliser avec ce script.
 
-### Préparation de la fonction 'save':
+### Préparation de la fonction 'save()':
 
 Il faudra définir la destination de la sauvegarde, via la variable 'bckp_path'.
 
-### Préparation de la fonction 'reload':
+### Préparation de la fonction 'reload()':
 
 La fonction 'reload' permet de planifier le redémarrage des équipements au bout de 2min, par défaut.
 Valeur minimum 1min, le programme ne pourra pas se terminer correctement si l'équipement redémarre pendant l'envoie d'instruction.
