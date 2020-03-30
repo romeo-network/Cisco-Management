@@ -22,7 +22,13 @@ Afin d’utiliser cet outil, il sera nécessaire d’installer les bons paquets:
 
 #### Sous Ubuntu:
 
-<code>sudo apt install -y python3-pip</code>
+<code>sudo apt install -y python3-pip </code>
+
+<code>sudo apt install -y build-essential libssl-dev libffi-dev </code>
+
+<code>sudo apt install -y python3-dev </code>
+
+<code>python3 -m pip install cryptography</code>
 
 <code>python3 -m pip install netmiko</code>
 
