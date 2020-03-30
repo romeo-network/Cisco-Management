@@ -236,7 +236,7 @@ def save():
     print("Durée de la sauvegarde: "+str(total_time)+"\n")
 
 
-#Fonction servant à obtenir un dossier, en bouclant à l'infini sur '0'.
+#Fonction servant à obtenir un menu, en bouclant à l'infini sur '0'.
 def main():
 
     choice ='0'
