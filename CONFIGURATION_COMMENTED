@@ -6,7 +6,6 @@ ip ssh logging events
 crypto key generate rsa usage-keys label SSH modulus 2048
 ip ssh rsa keypair-name SSH
 ip ssh version 2  
-ip ssh dh min size 2048
 ip scp server enable
 ip access-list standard SSH
 permit 100.0.0.1 0.0.0.0
