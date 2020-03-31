@@ -31,6 +31,7 @@ service tcp-keepalives-out
 no service pad
 privilege exec level 15 enable
 ip arp proxy disable
+service password-encryption
 
 line vty 0 2
 login local
