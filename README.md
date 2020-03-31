@@ -1,5 +1,5 @@
 # Cisco-Management
-Cet outil a pour but la gestion d'équipement **Cisco propulsé sous IOS**.
+Cet outil a pour but la gestion d'équipement **Cisco propulsé sous IOS** (IOS 12 & 15).
 
 ## Présentation:
 
