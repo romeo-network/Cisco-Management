@@ -29,8 +29,7 @@ no ip bootp server
 no service dhcp 
 no snmp-server enable traps 
 no snmp-server   
-no ip source-route  
-no service dhcp
+no ip source-route
 service tcp-keepalives-in
 service tcp-keepalives-out
 no service pad
