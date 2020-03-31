@@ -51,11 +51,11 @@ Exemple:
 
 ### Préparation des fichiers 'CONFIGURATION_L2' et 'CONFIGURATION_L3:
 
-Dans les fichiers ‘configuration_l3’ et ‘configuration_l2’, se trouvent les instructions qui seront envoyés aux équipements.
+Dans les fichiers ‘configuration_l3’ et ‘configuration_l2’, se trouvent les instructions qui seront envoyées aux équipements.
 Avant d’ajouter des instructions dans ces fichiers, il est vivement conseillé de les tester directement sur au moins un équipement, afin de s'assurer du comportement en résultant.
 De plus, si vous utilisez les fichiers fournis ici, adapter la 'range' des 'line vty' selon vos besoins. 
 
-Le fichier 'CONFIGURATION_COMMENTED' explique brièvement l'usage des commandes, ne pas l'utiliser avec ce script.
+Le fichier 'CONFIGURATION_COMMENTED' explique brièvement l'usage des commandes, **ne pas l'utiliser avec ce script.**
 
 ### Préparation de la fonction 'save()':
 
