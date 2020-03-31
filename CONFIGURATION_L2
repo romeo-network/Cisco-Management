@@ -28,6 +28,7 @@ no service pad
 vtp mode transparent
 privilege exec level 15 enable
 ip arp proxy disable
+service password-encryption
 
 login on-failure log
 login on-success log
@@ -53,7 +54,6 @@ no ip mask-reply
 no ip proxy-arp 
 no ip route-cache     
 no ip mroute-cache 
-no mop enable
 
 line console 0
 login local
