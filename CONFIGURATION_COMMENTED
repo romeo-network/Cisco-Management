@@ -109,4 +109,3 @@ no ip mask-reply
 no ip proxy-arp 
 no ip route-cache     
 no ip mroute-cache 
-no mop enable
