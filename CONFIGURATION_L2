@@ -1,8 +1,8 @@
 ip ssh time-out 60
 ip ssh logging events
-crypto key generate rsa usage-keys label SSH modulus 2048
+crypto key generate rsa usage-keys label SSH modulus 4096
 ip ssh rsa keypair-name SSH
-ip ssh version 2  
+ip ssh version 2
 ip scp server enable
 no ip domain-name
 ip access-list standard SSH
@@ -14,13 +14,13 @@ no service udp-small-servers
 no service finger
 no service config
 no cdp run
-no ip http server 
+no ip http server
 no ip http secure-server
 no ip bootp server
-no service dhcp 
-no snmp-server enable traps 
-no snmp-server   
-no ip source-route  
+no service dhcp
+no snmp-server enable traps
+no snmp-server
+no ip source-route
 no service dhcp
 service tcp-keepalives-in
 service tcp-keepalives-out
@@ -39,41 +39,40 @@ login delay 2
 line vty 0 4
 access-class SSH in
 
-
 vlan 666
-name QUARANTAINE
+name QUARANTINE
 shutdown
 vlan 999
-name NATIF
+name NATIVE
 
 int vlan 1
-shutdown  
+shutdown
 no ip redirects
 no ip unreachables
-no ip mask-reply  
-no ip proxy-arp 
-no ip route-cache     
-no ip mroute-cache 
+no ip mask-reply
+no ip proxy-arp
+no ip route-cache
+no ip mroute-cache
 
 line console 0
 login local
 exec-timeout 3 0
 transport preferred none
-loggin synchronous
+logging synchronous
 
 line vty 0 2
 login local
 transport input ssh
 transport output ssh
 exec-timeout 3 0
-loggin synchronous
+logging synchronous
 
 line vty 3 903
 login
 no exec
 transport input none
 transport output none
- 
+
 service timestamps log datetime localtime show-timezone
 archive
 log config
