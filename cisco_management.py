@@ -1,278 +1,144 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#Version 1.1
-#25/03/2020
-#License GPL.3-0
-#Author romeo-network
+# Version 2.0
+# Updated: 19/02/2025
+# License: GPL-3.0
+# Author: romeo-network
 
-#Importation des modules nécessaires.
+import argparse
+import logging
+import os
+import sys
+import time
+from datetime import datetime
+from getpass import getpass
+from typing import List
+
 from netmiko import ConnectHandler
 from netmiko.ssh_exception import NetMikoTimeoutException
-from getpass import getpass
-from datetime import datetime
-import getpass
-import calendar
-import time
-import os
-import errno
-import sys
 
-#Récupération des informations d'identifications 
-print("Entrez vos informations de connexion: ")
-username = input("Username: \n")
-password = getpass.getpass("Password: \n")
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-#Fonction destinée à propulser un fichier de configuration vers les équipements.
-def configuration():
-    start_time = datetime.now()
-    
-    #Ouverture du fichier de configuration et du fichier contenant les IP des commutateurs.
-    with open('CONFIGURATION_L2') as f:
-        lines_l2 = f.read().splitlines()
-    with open('switch.list') as f:
-        ip_sw = f.read().splitlines()
-        
-    #Boucle autant de fois qu'il y a de ligne dans le fichier 'switch.list'.
-    for ip in ip_sw:
+# Function to read IP addresses from a file
+def read_ip_addresses(file_path: str) -> List[str]:
+    with open(file_path) as file:
+        return file.read().splitlines()
+
+# Function to read configuration lines from a file
+def read_configuration(file_path: str) -> List[str]:
+    with open(file_path) as file:
+        return file.read().splitlines()
+
+# Function to configure devices
+def configure_devices(ip_addresses: List[str], config_lines: List[str], username: str, password: str):
+    for ip in ip_addresses:
         device = {
             'device_type': 'cisco_ios',
             'ip': ip,
             'username': username,
             'password': password,
-                }        
-        net_connect = ConnectHandler(**device)  
-        #Vérifie la présence d'une ligne de configuration issu du fichier 'CONFIGURATION_L2', si résultat positif: n'envoie rien.
-        #Sauvegarde la 'running-config' dans la 'startup-config' dans les 2 cas.
-        try:                    
-            result= net_connect.send_command("show running-config | inc ip access-list standard SSH")
-        except (NetMikoTimeoutException):
-            print ("Délai d'attente dépassé.  " +ip)
-        if "ip access-list standard SSH" in result:
-            net_connect.save_config()
-            time.sleep(0.5)
-            net_connect.disconnect()
-            
-        #Envoie l'intégralité du contenu du fichier de configuration.
-        else:
-            output = net_connect.send_config_set(lines_l2)
-            time.sleep(1)
-            net_connect.save_config()
-            time.sleep(0.5)
-            net_connect.disconnect()
-            print(output)
-
-    #Ouverture du fichier de configuration et du fichier contenant les IP des routeurs.
-    with open('CONFIGURATION_L3') as f:
-         lines = f.read().splitlines()
-    with open('router.list') as f:
-         ip_rtr = f.read().splitlines()
-         
-         
-    #Boucle autant de fois qu'il y a de ligne dans 'router.list'.
-    for ip in ip_rtr:
-        device = {
-            'device_type': 'cisco_ios',
-            'ip': ip,
-            'username': username,
-            'password': password,
-                }
-        
-        net_connect = ConnectHandler(**device) 
-        #Vérifie la présence d'une ligne de configuration issue de 'CONFIGURATION_L3', si résultat positif; n'envoie rien.
-        #Sauvegarde la 'running-config' dans la 'startup-config' dans les 2 cas.
-        try:                   
-            result= net_connect.send_command("show running-config | inc ip access-list standard SSH")
-        except (NetMikoTimeoutException):
-            print ("Délai d'attente dépassé. " + ip)
-        if "ip access-list standard SSH" in result:
-            net_connect.save_config()
-            time.sleep(0.5)
-            net_connect.disconnect()
-            
-        #Envoie l'intégralité du contenu du fichier de configuration
-        
-        else:
-            output = net_connect.send_config_set(lines)
-            time.sleep(1)
-            net_connect.save_config()
-            time.sleep(0.5)
-            net_connect.disconnect()
-            print(output)
-
-    end_time = datetime.now()
-    total_time = end_time - start_time
-    print("Durée de la configuration: "+str(total_time)+"\n")
-
-#Fonction destinée à redémarrer les équipements.
-def reload():
-
-    with open('router.list') as f:
-        ip_rtr = f.read().splitlines()
-
-    with open('switch.list') as f:
-        ip_sw = f.read().splitlines()
-    ip_add = ip_rtr + ip_sw
-    
-
-    #Pour chaque ligne présente, boucle et envoie des instructions de redémarrage.
-    for ip in ip_add: 
-        device = {
-        'device_type': 'cisco_ios',
-        'ip': ip,
-        'username': username,
-        'password': password,
-         }                
-        net_connect = ConnectHandler(**device)
-        net_connect.send_command('reload in 5', '\n') 
-        time.sleep(0.5)
-        net_connect.send_command('no\n', expect_string='confirm')
-        time.sleep(0.5)
-        net_connect.send_command('\n')
-        time.sleep(0.5)
-        net_connect.disconnect()
-        
-#Fonction destiné à supprimer les fichiers de configurations des équipements.
-#Appelle la fonction 'reload()' une fois terminée.
-def wipeout():
-    start_time = datetime.now()
-
-    with open('switch.list') as f:
-        ip_sw = f.read().splitlines()
-    
-    #Boucle autant de fois qu'il y a de ligne, et envoie des instructions d'effacement des fichiers vlan.dat et startup-config.
-    for ip in ip_sw:
-        device = {
-        'device_type': 'cisco_ios',
-        'ip': ip,
-        'username': username,
-        'password': password,
-         }
-        net_connect = ConnectHandler(**device)
-        net_connect.send_command('delete vlan.dat', '\n')
-        time.sleep(0.5)
-        net_connect.send_command('vlan.dat\n', expect_string='confirm')
-        time.sleep(0.5)
-        net_connect.send_command('\n')
-        time.sleep(0.5)
-        net_connect.send_command('write erase', expect_string='confirm')
-        time.sleep(0.5)
-        net_connect.send_command('\n')
-        net_connect.disconnect()
-        
-
-    with open('router.list') as f:
-        ip_rtr = f.read().splitlines()
-        
-    #Boucle autant de fois qu'il y a de ligne, et envoie des instructions d'effacement de la startup-config.
-    for ip in ip_rtr:
-        device = {
-        'device_type': 'cisco_ios',
-        'ip': ip,
-        'username': username,
-        'password': password,
-         }                
-        net_connect = ConnectHandler(**device)
-        net_connect.send_command('write erase', expect_string='confirm')
-        time.sleep(0.5)
-        net_connect.send_command('\n')
-        net_connect.disconnect()
-    #Appelle la fonction 'reload()'
-    reload()
-
-    end_time = datetime.now()
-    total_time = end_time - start_time
-    print("Durée de l'effacement: "+str(total_time)+"\n")
-    
-
-#Fonction destinée à sauvegarder les configurations des équipements
-def save():
-    start_time = datetime.now()
-
-    with open('router.list') as f:
-        ip_rtr = f.read().splitlines()
-    with open('switch.list') as f:
-        ip_sw = f.read().splitlines()
-        
-    #Addition de liste.
-    ip_add = ip_rtr + ip_sw
-  
-    #Boucle autant de fois qu'il y a de ligne dans la liste.
-    #Récupère les configurations des équipements.
-    for ip in ip_add:        
-  
-        device = {
-        'device_type': 'cisco_ios',
-        'ip': ip,
-        'username': username,
-        'password': password,
-         }
-
-        net_connect = ConnectHandler(**device)        
-        #Récupération du hostname pour nommer le dossier de sauvegarde
-        def hostname():            
-            sh_hstn = net_connect.send_command("show running-config | in hostname")
-            hostname = sh_hstn.split()
-            return hostname[1]           
-            
-        #Ici, on obtient l'équivalent d'un 'mkdir -p' pour l'idempotence.
+        }
         try:
-            os.makedirs("/home/cisco/" + hostname())
-        except OSError as exc:
-            if exc.errno == errno.EEXIST and os.path.isdir("/home/cisco/" + hostname()):
-                pass
-                
-        #Création des fichiers en local, et y incorpore le résultat du 'show running-config'.
-        bckp = net_connect.send_command("show running-config")              
-        now = datetime.now()
-        date = now.strftime("%d_%m_%Y_%H:%M:%S")
-        bckp_path = "/home/cisco/{0}/{1}.txt".format(hostname(),date)        
-        with open(bckp_path, "a") as file:
-            file.write(bckp + "\n")
-        net_connect.disconnect()  
+            with ConnectHandler(**device) as net_connect:
+                result = net_connect.send_command("show running-config | inc ip access-list standard SSH")
+                if "ip access-list standard SSH" in result:
+                    net_connect.save_config()
+                else:
+                    output = net_connect.send_config_set(config_lines)
+                    net_connect.save_config()
+                    logging.info(f"Configured {ip}: {output}")
+        except NetMikoTimeoutException:
+            logging.error(f"Timeout error for {ip}")
 
-    end_time = datetime.now()
-    total_time = end_time - start_time
-    print("Durée de la sauvegarde: "+str(total_time)+"\n")
+# Function to reload devices
+def reload_devices(ip_addresses: List[str], username: str, password: str):
+    for ip in ip_addresses:
+        device = {
+            'device_type': 'cisco_ios',
+            'ip': ip,
+            'username': username,
+            'password': password,
+        }
+        try:
+            with ConnectHandler(**device) as net_connect:
+                net_connect.send_command('reload in 5', expect_string=r'confirm')
+                net_connect.send_command('no')
+                logging.info(f"Reload scheduled for {ip}")
+        except NetMikoTimeoutException:
+            logging.error(f"Timeout error for {ip}")
 
+# Function to wipe out configurations
+def wipeout_configurations(ip_addresses: List[str], username: str, password: str):
+    for ip in ip_addresses:
+        device = {
+            'device_type': 'cisco_ios',
+            'ip': ip,
+            'username': username,
+            'password': password,
+        }
+        try:
+            with ConnectHandler(**device) as net_connect:
+                net_connect.send_command('delete vlan.dat', expect_string=r'confirm')
+                net_connect.send_command('write erase', expect_string=r'confirm')
+                logging.info(f"Wiped configuration for {ip}")
+        except NetMikoTimeoutException:
+            logging.error(f"Timeout error for {ip}")
 
-#Fonction servant à obtenir un menu, en bouclant à l'infini sur '0'.
+# Function to save configurations
+def save_configurations(ip_addresses: List[str], username: str, password: str):
+    for ip in ip_addresses:
+        device = {
+            'device_type': 'cisco_ios',
+            'ip': ip,
+            'username': username,
+            'password': password,
+        }
+        try:
+            with ConnectHandler(**device) as net_connect:
+                hostname = net_connect.send_command("show running-config | in hostname").split()[1]
+                backup_dir = f"/home/cisco/{hostname}"
+                os.makedirs(backup_dir, exist_ok=True)
+                backup_path = f"{backup_dir}/{datetime.now().strftime('%d_%m_%Y_%H:%M:%S')}.txt"
+                with open(backup_path, "w") as file:
+                    file.write(net_connect.send_command("show running-config"))
+                logging.info(f"Saved configuration for {ip} to {backup_path}")
+        except NetMikoTimeoutException:
+            logging.error(f"Timeout error for {ip}")
+
+# Main function to handle command-line arguments
 def main():
+    parser = argparse.ArgumentParser(description="Network Device Management Script")
+    parser.add_argument("--config", action="store_true", help="Configure devices")
+    parser.add_argument("--reload", action="store_true", help="Reload devices")
+    parser.add_argument("--wipeout", action="store_true", help="Wipe out configurations")
+    parser.add_argument("--save", action="store_true", help="Save configurations")
+    parser.add_argument("--username", required=True, help="Username for device login")
+    parser.add_argument("--password", help="Password for device login (will prompt if not provided)")
 
-    choice ='0'
-    while choice =='0':
-        print("Menu principal: choix disponible 1 à 4. \n")
-        print("Choisir '1' pour la configuration avancée. ")
-        print("Choisir '2' pour la sauvegarde intégrale. ")
-        print("Choisir '3' pour l'effacement intégral. ")
-        print("Choisir '4' pour quitter le script. \n")
-       
-        choice = input ("Faites un choix: ")
+    args = parser.parse_args()
 
-    if choice == "4":
-        print("\nFin du script.")
-        sys.exit()
-	        
-    elif choice == "3":
-        print("\nEffacement intégral. ")
-        wipeout()
-        time.sleep(0.5)
-        main()
+    if not args.password:
+        args.password = getpass("Password: ")
 
-    elif choice == "2":
-        print("\nSauvegarde intégrale. ")
-        save()
-        time.sleep(0.5)
-        main()
+    switch_ips = read_ip_addresses('switch.list')
+    router_ips = read_ip_addresses('router.list')
+    config_l2 = read_configuration('CONFIGURATION_L2')
+    config_l3 = read_configuration('CONFIGURATION_L3')
 
-    elif choice == "1":
-        print("\nConfiguration des IOS. ")
-        configuration()
-        time.sleep(0.5)
-        main()
-
+    if args.config:
+        configure_devices(switch_ips, config_l2, args.username, args.password)
+        configure_devices(router_ips, config_l3, args.username, args.password)
+    elif args.reload:
+        reload_devices(switch_ips + router_ips, args.username, args.password)
+    elif args.wipeout:
+        wipeout_configurations(switch_ips + router_ips, args.username, args.password)
+        reload_devices(switch_ips + router_ips, args.username, args.password)
+    elif args.save:
+        save_configurations(switch_ips + router_ips, args.username, args.password)
     else:
-        print("\nChoix invalide. \n")
-        main()
+        logging.error("No valid action specified. Use --config, --reload, --wipeout, or --save.")
 
-main()
+if __name__ == "__main__":
+    main()
